@@ -3,9 +3,8 @@
 	"name": "Auto Graph Coloring",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Automatically assigns distinct random colors to groups in the Obsidian graph view.",
-	"author": "Auto Graph Coloring",
-	"authorUrl": "https://github.com/yourusername/auto-graph-coloring",
-	"fundingUrl": "",
+	"description": "Automatically assigns distinct random colors to groups in the graph view.",
+	"author": "Xallt",
+	"authorUrl": "https://github.com/Xallt",
 	"isDesktopOnly": false
 }
