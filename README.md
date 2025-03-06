@@ -6,12 +6,8 @@
 
 > Automatically assign visually distinct colors to groups in your Obsidian graph view with a single command.
 
-<!-- 
-Add a screenshot of your plugin in action here once available:
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Xallt/auto-graph-coloring/master/images/preview.png" alt="Auto Graph Coloring Preview" width="600">
-</p>
--->
+<img width="1132" alt="image" src="https://github.com/user-attachments/assets/097d3fe1-10c8-4d33-81a1-402a0c8383cb" />
+
 
 ## ✨ Features
 
