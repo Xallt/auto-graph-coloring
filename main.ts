@@ -1,4 +1,4 @@
-import { App, Plugin, Notice } from 'obsidian';
+import { App, Plugin, Notice, normalizePath } from 'obsidian';
 
 // Remember to rename these classes and interfaces!
 
@@ -84,18 +84,13 @@ export default class AutoGraphColoringPlugin extends Plugin {
 	 */
 	async autoColorGroups() {
 		try {
-			// Access the graph plugin using the app object
-			// We need to use 'any' type here because internalPlugins is not exposed in the public API
-			const app = this.app as any;
-			const graphPlugin = app.internalPlugins.plugins.graph;
+			// Access graph settings directly from the config file
+			const configDir = this.app.vault.configDir;
+			const graphConfigPath = normalizePath(configDir + '/graph.json');
 
-			if (!graphPlugin) {
-				new Notice('Graph plugin not found');
-				return;
-			}
-
-			// Load current graph settings
-			const settings = await graphPlugin.loadData();
+			// Read the graph config file
+			const graphConfigJson = await this.app.vault.adapter.read(graphConfigPath);
+			const settings = JSON.parse(graphConfigJson);
 
 			// Check if there are any color groups
 			if (!settings.colorGroups || settings.colorGroups.length === 0) {
@@ -112,17 +107,19 @@ export default class AutoGraphColoringPlugin extends Plugin {
 				};
 			});
 
-			// Save the updated settings
-			await graphPlugin.saveData(settings);
+			// Save the updated settings back to the file
+			await this.app.vault.adapter.write(graphConfigPath, JSON.stringify(settings, null, 2));
 
-			// Refresh the graph view
-			// First detach any existing graph views
-			this.app.workspace.detachLeavesOfType('graph');
-			// Then disable and re-enable the graph plugin to apply changes
-			await graphPlugin.disable();
-			await graphPlugin.enable();
+			// Check if any graph views are open
+			const graphLeaves = this.app.workspace.getLeavesOfType('graph');
+			const hasOpenGraphs = graphLeaves.length > 0;
 
-			new Notice(`Successfully assigned colors to ${totalGroups} groups`);
+			// Notify the user
+			if (hasOpenGraphs) {
+				new Notice(`Successfully assigned colors to ${totalGroups} groups. Please refresh your graph view to see the changes.`);
+			} else {
+				new Notice(`Successfully assigned colors to ${totalGroups} groups. The changes will be visible when you open a graph view.`);
+			}
 		} catch (error) {
 			console.error('Error auto-coloring groups:', error);
 			new Notice('Error auto-coloring groups. Check console for details.');
