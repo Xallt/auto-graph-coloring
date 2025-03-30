@@ -1,7 +1,7 @@
 {
 	"id": "auto-graph-coloring",
 	"name": "Auto Graph Coloring",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"minAppVersion": "0.15.0",
 	"description": "Automatically assigns distinct random colors to groups in the graph view.",
 	"author": "Xallt",
